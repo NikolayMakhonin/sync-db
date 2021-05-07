@@ -23,12 +23,11 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d52e1996-07d3-4492-b0b2-6fba29f4b076" name="Default Changelist" comment="">
+    <list default="true" id="d52e1996-07d3-4492-b0b2-6fba29f4b076" name="Default Changelist" comment="Init project.">
       <change afterPath="$PROJECT_DIR$/src/main/common/contracts.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/common/contracts/common.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/common/contracts/io.ts" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/common/contracts/watch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,14 +232,7 @@
       <workItem from="1606561392461" duration="2123000" />
       <workItem from="1620274450687" duration="1724000" />
       <workItem from="1620277457275" duration="6000" />
-      <workItem from="1620298675391" duration="2263000" />
-    </task>
-    <task id="LOCAL-00020" summary="Fix travis">
-      <created>1590731758479</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1590731758479</updated>
+      <workItem from="1620298675391" duration="2761000" />
     </task>
     <task id="LOCAL-00021" summary="Change karma-edge-launcher to karma-edgium-launcher">
       <created>1590733806026</created>
@@ -578,7 +570,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620277276938</updated>
     </task>
-    <option name="localTasksCounter" value="69" />
+    <task id="LOCAL-00069" summary="Init project.">
+      <created>1620354716001</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1620354716002</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -654,7 +653,6 @@
   <component name="VcsManagerConfiguration">
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="travis OK" />
     <MESSAGE value="Upgrade mocha 5.2.0 -&gt; 7.2.0" />
     <MESSAGE value="Fix coverage" />
     <MESSAGE value="Moved logger to separated module" />
@@ -679,38 +677,43 @@
     <MESSAGE value="Suppress experimental warnings" />
     <MESSAGE value="Fix merge" />
     <MESSAGE value="Init project. All tests OK" />
-    <option name="LAST_COMMIT_MESSAGE" value="Init project. All tests OK" />
+    <MESSAGE value="Init project." />
+    <option name="LAST_COMMIT_MESSAGE" value="Init project." />
     <option name="PRESELECT_EXISTING_CHANGELIST" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2" timestamp="1620277276104">
+    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2" timestamp="1620354713427">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
-    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2/0.0.1920.882@0.0.1920.882" timestamp="1620277276104" />
+    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2/0.0.1920.882@0.0.1920.882" timestamp="1620354713427" />
     <state x="-1" y="0" width="1921" height="882" key="DiffContextDialog" timestamp="1620277252712">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
     <state x="-1" y="0" width="1921" height="882" key="DiffContextDialog/0.0.1920.882@0.0.1920.882" timestamp="1620277252712" />
-    <state width="1892" height="154" key="GridCell.Tab.0.bottom" timestamp="1620277429203">
+    <state width="1892" height="352" key="GridCell.Tab.0.bottom" timestamp="1620355162986">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
-    <state width="1892" height="154" key="GridCell.Tab.0.bottom/0.0.1920.882@0.0.1920.882" timestamp="1620277429203" />
-    <state width="1892" height="154" key="GridCell.Tab.0.center" timestamp="1620277429203">
+    <state width="1892" height="352" key="GridCell.Tab.0.bottom/0.0.1920.882@0.0.1920.882" timestamp="1620355162986" />
+    <state width="1892" height="352" key="GridCell.Tab.0.center" timestamp="1620355162985">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
-    <state width="1892" height="154" key="GridCell.Tab.0.center/0.0.1920.882@0.0.1920.882" timestamp="1620277429203" />
-    <state width="1892" height="154" key="GridCell.Tab.0.left" timestamp="1620277429203">
+    <state width="1892" height="352" key="GridCell.Tab.0.center/0.0.1920.882@0.0.1920.882" timestamp="1620355162985" />
+    <state width="1892" height="352" key="GridCell.Tab.0.left" timestamp="1620355162985">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
-    <state width="1892" height="154" key="GridCell.Tab.0.left/0.0.1920.882@0.0.1920.882" timestamp="1620277429203" />
-    <state width="1892" height="154" key="GridCell.Tab.0.right" timestamp="1620277429203">
+    <state width="1892" height="352" key="GridCell.Tab.0.left/0.0.1920.882@0.0.1920.882" timestamp="1620355162985" />
+    <state width="1892" height="352" key="GridCell.Tab.0.right" timestamp="1620355162986">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
-    <state width="1892" height="154" key="GridCell.Tab.0.right/0.0.1920.882@0.0.1920.882" timestamp="1620277429203" />
+    <state width="1892" height="352" key="GridCell.Tab.0.right/0.0.1920.882@0.0.1920.882" timestamp="1620355162986" />
     <state x="343" y="0" key="SettingsEditor" timestamp="1620277271133">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
     <state x="343" y="0" key="SettingsEditor/0.0.1920.882@0.0.1920.882" timestamp="1620277271133" />
+    <state x="451" y="106" key="Vcs.Push.Dialog.v2" timestamp="1620354695654">
+      <screen x="0" y="0" width="1920" height="882" />
+    </state>
+    <state x="451" y="106" key="Vcs.Push.Dialog.v2/0.0.1920.882@0.0.1920.882" timestamp="1620354695654" />
     <state x="0" y="-7" width="1920" height="889" key="find.popup" timestamp="1620277006724">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
