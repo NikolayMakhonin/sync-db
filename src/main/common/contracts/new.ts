@@ -27,19 +27,28 @@ export type TGetRequest<TIndex> = {
     indexTo?: TIndex
     limit?: number
     desc?: boolean
+    noIndexes?: boolean
+    noItems?: boolean
 }
 
-export type TGetResult<TItem> = {
+export type TGetResult<TIndex, TItem> = {
     type: TRequestMethod.GetCount
     count: number
 } | {
-    type: TRequestMethod.Get | TRequestMethod.GetRange
+    type: TRequestMethod.Get
     items: TItem[]
+} | {
+    type: TRequestMethod.GetRange
+    items: TItem[]
+} | {
+    type: TRequestMethod.GetRange
+    indexes: TIndex[]
+    items?: TItem[]
 }
 
 export type TGetResults<TIndex, TItem> = {
 	requests: TGetRequest<TIndex>
-	results: TGetResult<TItem>
+	results: TGetResult<TIndex, TItem>
 }
 
 export type TGet<TIndex, TItem> = (requests: TGetRequest<TIndex>[])
@@ -165,4 +174,3 @@ export interface IDb<TChangeIndex, TIndex, TItem> extends ITransactionAsyncHeap<
 }
 
 // endregion
-
