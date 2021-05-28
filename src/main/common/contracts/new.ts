@@ -12,9 +12,11 @@ export enum TRequestMethod {
     DeleteRange = 'deleteRange',
 }
 
+export type TEntry<TIndex, TItem> = [TIndex, TItem]
+
 // endregion
 
-// region get
+// region TGet
 
 export type TGetRequest<TIndex> = {
     type: TRequestMethod.GetCount
@@ -27,8 +29,7 @@ export type TGetRequest<TIndex> = {
     indexTo?: TIndex
     limit?: number
     desc?: boolean
-    noIndexes?: boolean
-    noItems?: boolean
+    indexesOnly?: boolean
 }
 
 export type TGetResult<TIndex, TItem> = {
@@ -36,14 +37,13 @@ export type TGetResult<TIndex, TItem> = {
     count: number
 } | {
     type: TRequestMethod.Get
-    items: TItem[]
+    entries: TEntry<TIndex, TItem|null>[]
 } | {
     type: TRequestMethod.GetRange
-    items: TItem[]
+    entries: TEntry<TIndex, TItem>[]
 } | {
     type: TRequestMethod.GetRange
     indexes: TIndex[]
-    items?: TItem[]
 }
 
 export type TGetResults<TIndex, TItem> = {
@@ -56,11 +56,85 @@ export type TGet<TIndex, TItem> = (requests: TGetRequest<TIndex>[])
 
 // endregion
 
-// region addDelete
+// region TDelete
+
+export type TDeleteRequest<TIndex> = {
+    type: TRequestMethod.Delete
+    indexes: TIndex[]
+} | {
+    type: TRequestMethod.DeleteRange
+    indexFrom?: TIndex
+    indexTo?: TIndex
+}
+
+// TODO
+export type TDeleteResult = {
+    type: TRequestMethod.Delete | TRequestMethod.DeleteRange
+}
+
+// TODO
+export type TDeleteResults<TIndex> = {
+	requests: TDeleteRequest<TIndex>
+	results: TDeleteResult
+}
+
+export type TDelete<TIndex, TItem> = (requests: TDeleteRequest<TIndex>[])
+    => TPromiseOrValue<TDeleteResults<TIndex, TItem>>
+
+// endregion
+
+// region TAdd
+
+export type TAddRequest<TItem> = {
+    type: TRequestMethod.Add
+    items: TItem[]
+    returnIndexes?: boolean
+}
+
+export type TAddResult<TIndex> = {
+    type: TRequestMethod.Add
+    indexes?: TIndex[]
+}
+
+export type TAddResults<TIndex, TItem> = {
+	requests: TAddRequest<TItem>
+	results: TAddResult<TIndex>
+}
+
+export type TAdd<TIndex, TItem> = (requests: TAddRequest<TItem>[])
+    => TPromiseOrValue<TAddResults<TIndex, TItem>>
+
+// endregion
+
+// region TPut
+
+export type TPutRequest<TIndex, TItem> = {
+    type: TRequestMethod.Put
+    entries: TEntry<TIndex, TItem>[]
+}
+
+// TODO
+export type TPutResult = {
+    type: TRequestMethod.Put
+}
+
+// TODO
+export type TPutResults<TIndex, TItem> = {
+	requests: TPutRequest<TIndex, TItem>
+	results: TPutResult<TIndex>
+}
+
+export type TPut<TIndex, TItem> = (requests: TPutRequest<TIndex, TItem>[])
+    => TPromiseOrValue<TPutResults<TIndex, TItem>>
+
+// endregion
+
+// region TAddDelete
 
 export type TAddDeleteRequest<TIndex, TItem> = {
     type: TRequestMethod.Add
     items: TItem[]
+    returnIndexes?: boolean
 } | {
     type: TRequestMethod.Delete
     indexes: TIndex[]
@@ -72,7 +146,7 @@ export type TAddDeleteRequest<TIndex, TItem> = {
 
 export type TAddDeleteResult<TIndex> = {
     type: TRequestMethod.Add
-    indexes: TIndex[]
+    indexes?: TIndex[]
 } | {
     type: TRequestMethod.Delete | TRequestMethod.DeleteRange
 }
@@ -87,11 +161,50 @@ export type TAddDelete<TIndex, TItem> = (requests: TAddDeleteRequest<TIndex, TIt
 
 // endregion
 
+// region TPutDelete
+
+export type TPutDeleteRequest<TIndex, TItem> = {
+    type: TRequestMethod.Add
+    items: TItem[]
+    returnIndexes?: boolean
+} | {
+    type: TRequestMethod.Put
+    entries: TEntry<TIndex, TItem>[]
+} | {
+    type: TRequestMethod.Delete
+    indexes: TIndex[]
+} | {
+    type: TRequestMethod.DeleteRange
+    indexFrom?: TIndex
+    indexTo?: TIndex
+}
+
+export type TPutDeleteResult<TIndex> = {
+    type: TRequestMethod.Add
+    indexes?: TIndex[]
+} | {
+    type: TRequestMethod.Put | TRequestMethod.Delete | TRequestMethod.DeleteRange
+}
+
+export type TPutDeleteResults<TIndex, TItem> = {
+	requests: TPutDeleteRequest<TIndex, TItem>
+	results: TPutDeleteResult<TIndex>
+}
+
+export type TPutDelete<TIndex, TItem> = (requests: TPutDeleteRequest<TIndex, TItem>[])
+    => TPromiseOrValue<TPutDeleteResults<TIndex, TItem>>
+
+// endregion
+
 // region change
 
 export type TChangeRequest<TIndex, TItem> = {
-    type: TRequestMethod.Put | TRequestMethod.Add
+    type: TRequestMethod.Add
     items: TItem[]
+    returnIndexes?: boolean
+} | {
+    type: TRequestMethod.Put
+    entries: TEntry<TIndex, TItem>[]
 } | {
     type: TRequestMethod.Delete
     indexes: TIndex[]
@@ -102,10 +215,10 @@ export type TChangeRequest<TIndex, TItem> = {
 }
 
 export type TChangeResult<TIndex> = {
-    type: TRequestMethod.Put
-    indexes: TIndex[]
+    type: TRequestMethod.Add
+    indexes?: TIndex[]
 } | {
-    type: TRequestMethod.Delete | TRequestMethod.DeleteRange
+    type: TRequestMethod.Put | TRequestMethod.Delete | TRequestMethod.DeleteRange
 }
 
 export type TChangeResults<TIndex, TItem> = {
