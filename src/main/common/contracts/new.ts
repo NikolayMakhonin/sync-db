@@ -9,7 +9,7 @@ export enum TRequestMethod {
     DeleteRange = 'deleteRange',
 }
 
-export type TRequest<TIndex, TItem> = {
+export type TGetRequest<TIndex> = {
     type: TRequestMethod.GetCount
 } | {
     type: TRequestMethod.Get
@@ -20,7 +20,9 @@ export type TRequest<TIndex, TItem> = {
     indexTo?: TIndex
     limit?: number
     desc?: boolean
-} | {
+}
+
+export type TChangeRequest<TIndex, TItem> = {
     type: TRequestMethod.Put
     items: TItem[]
 } | {
@@ -32,36 +34,39 @@ export type TRequest<TIndex, TItem> = {
     indexTo?: TIndex
 }
 
-export type TResult<TIndex, TItem> = {
+export type TGetResult<TItem> = {
     type: TRequestMethod.GetCount
     count: number
 } | {
     type: TRequestMethod.Get | TRequestMethod.GetRange
     items: TItem[]
-} | {
+}
+
+export type TChangeResult<TIndex> = {
     type: TRequestMethod.Put
     indexes: TIndex[]
 } | {
     type: TRequestMethod.Delete | TRequestMethod.DeleteRange
 }
-// | {
-// 	type: TRequestMethod
-// 	error: {
-// 		code: string
-// 		message: string
-// 	}
-// }
 
-export type TResults<TIndex, TItem> = {
-	requests: TRequest<TIndex, TItem>
-	results: TResult<TIndex, TItem>
+export type TGetResults<TIndex, TItem> = {
+	requests: TGetRequest<TIndex>
+	results: TGetResult<TItem>
+}
+
+export type TChangeResults<TIndex, TItem> = {
+	requests: TChangeRequest<TIndex, TItem>
+	results: TChangeResult<TIndex>
 }
 
 export interface IAsyncHeap<TIndex, TItem> {
-    request(requests: TRequest<TIndex, TItem>[]): TPromiseOrValue<TResults<TIndex, TItem>>
+    get(requests: TGetRequest<TIndex>[]): TPromiseOrValue<TGetResults<TIndex, TItem>>
+    change(requests: TChangeRequest<TIndex, TItem>[]): TPromiseOrValue<TChangeResults<TIndex, TItem>>
 }
 
 export interface ITransactionAsyncHeap<TIndex, TItem> {
-    requestInTransaction(requests: TRequest<TIndex, TItem>[]): TPromiseOrValue<TResults<TIndex, TItem>>
+    get(requests: TGetRequest<TIndex>[]): TPromiseOrValue<TGetResults<TIndex, TItem>>
+    changeInTransaction(requests: TChangeRequest<TIndex, TItem>[]): TPromiseOrValue<TChangeResults<TIndex, TItem>>
+    /** Forbidden to use get requests after change requests */
     useTransaction<T>(func: (transaction: IAsyncHeap<TIndex, TItem>) => TPromiseOrValue<T>): TPromiseOrValue<T>
 }
