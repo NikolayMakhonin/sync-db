@@ -28,7 +28,9 @@ export type TGetRequest<TIndex> = {
 } | {
 	type: TRequestMethod.GetRange
 	indexFrom?: TIndex
+	indexFromExclusive?: boolean
 	indexTo?: TIndex
+	indexToExclusive?: boolean
 	limit?: number
 	desc?: boolean
 	indexesOnly?: boolean
@@ -71,7 +73,9 @@ export type TRemoveRequest<TIndex> = {
 } | {
 	type: TRequestMethod.RemoveRange
 	indexFrom?: TIndex
+	indexFromExclusive?: boolean
 	indexTo?: TIndex
+	indexToExclusive?: boolean
 }
 
 export type TRequestsRemove<TIndex> = {
