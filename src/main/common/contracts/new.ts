@@ -3,239 +3,188 @@ export type TPromiseOrValue<TValue> = Promise<TValue> | TValue
 // region common
 
 export enum TRequestMethod {
-    Get = 'get',
-    GetCount = 'getCount',
-    GetRange = 'getRange',
-    Add = 'add',
-    Put = 'put',
-    Delete = 'delete',
-    DeleteRange = 'deleteRange',
+	Get = 'get',
+	GetCount = 'getCount',
+	GetRange = 'getRange',
+	Add = 'add',
+	Put = 'put',
+	Remove = 'remove',
+	RemoveRange = 'removeRange',
 }
 
 export type TEntry<TIndex, TItem> = [TIndex, TItem]
+
+export type TRequestsFunc<TRequests, TResults> = (requests: TRequests) => TPromiseOrValue<TResults>
 
 // endregion
 
 // region TGet
 
 export type TGetRequest<TIndex> = {
-    type: TRequestMethod.GetCount
+	type: TRequestMethod.GetCount
 } | {
-    type: TRequestMethod.Get
-    indexes: TIndex[]
+	type: TRequestMethod.Get
+	indexes: TIndex[]
 } | {
-    type: TRequestMethod.GetRange
-    indexFrom?: TIndex
-    indexTo?: TIndex
-    limit?: number
-    desc?: boolean
-    indexesOnly?: boolean
+	type: TRequestMethod.GetRange
+	indexFrom?: TIndex
+	indexTo?: TIndex
+	limit?: number
+	desc?: boolean
+	indexesOnly?: boolean
+}
+
+export type TRequestsGet<TIndex> = {
+	get: TGetRequest<TIndex>[]
 }
 
 export type TGetResult<TIndex, TItem> = {
-    type: TRequestMethod.GetCount
-    count: number
+	type: TRequestMethod.GetCount
+	count: number
 } | {
-    type: TRequestMethod.Get
-    entries: TEntry<TIndex, TItem|null>[]
+	type: TRequestMethod.Get
+	entries: TEntry<TIndex, TItem|null>[]
 } | {
-    type: TRequestMethod.GetRange
-    entries: TEntry<TIndex, TItem>[]
+	type: TRequestMethod.GetRange
+	entries: TEntry<TIndex, TItem>[]
 } | {
-    type: TRequestMethod.GetRange
-    indexes: TIndex[]
+	type: TRequestMethod.GetRange
+	indexes: TIndex[]
 }
 
-export type TGetResults<TIndex, TItem> = {
-	requests: TGetRequest<TIndex>
-	results: TGetResult<TIndex, TItem>
+export type TResultsGet<TIndex, TItem> = {
+	requests: TRequestsGet<TIndex>
+	results: {
+		get: TGetResult<TIndex, TItem>[]
+	}
 }
 
-export type TGet<TIndex, TItem> = (requests: TGetRequest<TIndex>[])
-    => TPromiseOrValue<TGetResults<TIndex, TItem>>
+export type TGet<TIndex, TItem> = TRequestsFunc<TRequestsGet<TIndex>, TResultsGet<TIndex, TItem>>
 
 // endregion
 
-// region TDelete
+// region TRemove
 
-export type TDeleteRequest<TIndex> = {
-    type: TRequestMethod.Delete
-    indexes: TIndex[]
+export type TRemoveRequest<TIndex> = {
+	type: TRequestMethod.Remove
+	indexes: TIndex[]
 } | {
-    type: TRequestMethod.DeleteRange
-    indexFrom?: TIndex
-    indexTo?: TIndex
+	type: TRequestMethod.RemoveRange
+	indexFrom?: TIndex
+	indexTo?: TIndex
 }
 
-// TODO
-export type TDeleteResult = {
-    type: TRequestMethod.Delete | TRequestMethod.DeleteRange
+export type TRequestsRemove<TIndex> = {
+	remove: TRemoveRequest<TIndex>
 }
 
-// TODO
-export type TDeleteResults<TIndex> = {
-	requests: TDeleteRequest<TIndex>
-	results: TDeleteResult
+export type TResultsRemove<TIndex> = {
+	requests: {
+		remove: TRemoveRequest<TIndex>
+	}
 }
 
-export type TDelete<TIndex, TItem> = (requests: TDeleteRequest<TIndex>[])
-    => TPromiseOrValue<TDeleteResults<TIndex, TItem>>
+export type TRemove<TIndex> = TRequestsFunc<TRequestsRemove<TIndex>, TResultsRemove<TIndex>>
 
 // endregion
 
 // region TAdd
 
 export type TAddRequest<TItem> = {
-    type: TRequestMethod.Add
-    items: TItem[]
-    returnIndexes?: boolean
+	type: TRequestMethod.Add
+	items: TItem[]
+	returnIndexes?: boolean
 }
 
-export type TAddResult<TIndex> = {
-    type: TRequestMethod.Add
-    indexes?: TIndex[]
+export type TRequestsAdd<TItem> = {
+	add: TAddRequest<TItem>[]
 }
 
-export type TAddResults<TIndex, TItem> = {
-	requests: TAddRequest<TItem>
-	results: TAddResult<TIndex>
+export type TResultsAdd<TIndex, TItem> = {
+	requests: TRequestsAdd<TItem>
+	results: {
+		add?: {
+			indexes?: TIndex[]
+		}
+	}
 }
 
-export type TAdd<TIndex, TItem> = (requests: TAddRequest<TItem>[])
-    => TPromiseOrValue<TAddResults<TIndex, TItem>>
+export type TAdd<TIndex, TItem> = TRequestsFunc<TRequestsAdd<TItem>, TResultsAdd<TIndex, TItem>>
 
 // endregion
 
 // region TPut
 
 export type TPutRequest<TIndex, TItem> = {
-    type: TRequestMethod.Put
-    entries: TEntry<TIndex, TItem>[]
+	type: TRequestMethod.Put
+	entries: TEntry<TIndex, TItem>[]
 }
 
-// TODO
-export type TPutResult = {
-    type: TRequestMethod.Put
+export type TRequestsPut<TIndex, TItem> = {
+	put: TPutRequest<TIndex, TItem>
 }
 
-// TODO
-export type TPutResults<TIndex, TItem> = {
-	requests: TPutRequest<TIndex, TItem>
-	results: TPutResult<TIndex>
+export type TResultsPut<TIndex, TItem> = {
+	requests: TRequestsPut<TIndex, TItem>
 }
 
-export type TPut<TIndex, TItem> = (requests: TPutRequest<TIndex, TItem>[])
-    => TPromiseOrValue<TPutResults<TIndex, TItem>>
+export type TPut<TIndex, TItem> = TRequestsFunc<TRequestsPut<TIndex, TItem>, TResultsPut<TIndex, TItem>>
 
 // endregion
 
-// region TAddDelete
+// region TAddRemove
 
-export type TAddDeleteRequest<TIndex, TItem> = {
-    type: TRequestMethod.Add
-    items: TItem[]
-    returnIndexes?: boolean
-} | {
-    type: TRequestMethod.Delete
-    indexes: TIndex[]
-} | {
-    type: TRequestMethod.DeleteRange
-    indexFrom?: TIndex
-    indexTo?: TIndex
-}
+export type TRequestsAddRemove<TIndex, TItem> =
+	TRequestsRemove<TIndex> & TRequestsAdd<TItem>
 
-export type TAddDeleteResult<TIndex> = {
-    type: TRequestMethod.Add
-    indexes?: TIndex[]
-} | {
-    type: TRequestMethod.Delete | TRequestMethod.DeleteRange
-}
+export type TResultsAddRemove<TIndex, TItem> =
+	TResultsRemove<TIndex> & TResultsAdd<TIndex, TItem>
 
-export type TAddDeleteResults<TIndex, TItem> = {
-	requests: TAddDeleteRequest<TIndex, TItem>
-	results: TAddDeleteResult<TIndex>
-}
-
-export type TAddDelete<TIndex, TItem> = (requests: TAddDeleteRequest<TIndex, TItem>[])
-    => TPromiseOrValue<TAddDeleteResults<TIndex, TItem>>
+/** operations order: remove, add */
+export type TAddRemove<TIndex, TItem> = TRequestsFunc<
+	TRequestsAddRemove<TIndex, TItem>,
+	TResultsAddRemove<TIndex, TItem>
+>
 
 // endregion
 
-// region TPutDelete
+// region TPutRemove
 
-export type TPutDeleteRequest<TIndex, TItem> = {
-    type: TRequestMethod.Add
-    items: TItem[]
-    returnIndexes?: boolean
-} | {
-    type: TRequestMethod.Put
-    entries: TEntry<TIndex, TItem>[]
-} | {
-    type: TRequestMethod.Delete
-    indexes: TIndex[]
-} | {
-    type: TRequestMethod.DeleteRange
-    indexFrom?: TIndex
-    indexTo?: TIndex
-}
+export type TRequestsPutRemove<TIndex, TItem> =
+	TRequestsRemove<TIndex> & TRequestsPut<TIndex, TItem>
 
-export type TPutDeleteResult<TIndex> = {
-    type: TRequestMethod.Add
-    indexes?: TIndex[]
-} | {
-    type: TRequestMethod.Put | TRequestMethod.Delete | TRequestMethod.DeleteRange
-}
+export type TResultsPutRemove<TIndex, TItem> =
+	TResultsRemove<TIndex> & TResultsPut<TIndex, TItem>
 
-export type TPutDeleteResults<TIndex, TItem> = {
-	requests: TPutDeleteRequest<TIndex, TItem>
-	results: TPutDeleteResult<TIndex>
-}
-
-export type TPutDelete<TIndex, TItem> = (requests: TPutDeleteRequest<TIndex, TItem>[])
-    => TPromiseOrValue<TPutDeleteResults<TIndex, TItem>>
+/** operations order: remove, put */
+export type TPutRemove<TIndex, TItem> = TRequestsFunc<
+	TRequestsPutRemove<TIndex, TItem>,
+	TResultsPutRemove<TIndex, TItem>
+>
 
 // endregion
 
 // region change
 
-export type TChangeRequest<TIndex, TItem> = {
-    type: TRequestMethod.Add
-    items: TItem[]
-    returnIndexes?: boolean
-} | {
-    type: TRequestMethod.Put
-    entries: TEntry<TIndex, TItem>[]
-} | {
-    type: TRequestMethod.Delete
-    indexes: TIndex[]
-} | {
-    type: TRequestMethod.DeleteRange
-    indexFrom?: TIndex
-    indexTo?: TIndex
-}
+export type TRequestsChange<TIndex, TItem> =
+	TRequestsRemove<TIndex> & TRequestsPut<TIndex, TItem> & TRequestsAdd<TItem>
 
-export type TChangeResult<TIndex> = {
-    type: TRequestMethod.Add
-    indexes?: TIndex[]
-} | {
-    type: TRequestMethod.Put | TRequestMethod.Delete | TRequestMethod.DeleteRange
-}
+export type TResultsChange<TIndex, TItem> =
+	TResultsRemove<TIndex> & TResultsPut<TIndex, TItem> & TResultsAdd<TIndex, TItem>
 
-export type TChangeResults<TIndex, TItem> = {
-	requests: TChangeRequest<TIndex, TItem>
-	results: TChangeResult<TIndex>
-}
-
-export type TChange<TIndex, TItem> = (requests: TChangeRequest<TIndex, TItem>[])
-    => TPromiseOrValue<TChangeResults<TIndex, TItem>>
+/** operations order: remove, put, add */
+export type TChange<TIndex, TItem> = TRequestsFunc<
+	TRequestsChange<TIndex, TItem>,
+	TResultsChange<TIndex, TItem>
+>
 
 // endregion
 
 // region INonUpdatableAsyncHeap
 
 export interface INonUpdatableAsyncHeap<TIndex, TItem> {
-    readonly get: TGet<TIndex, TItem>
-    readonly addDelete: TAddDelete<TIndex, TItem>
+	readonly get: TGet<TIndex, TItem>
+	readonly addRemove: TAddRemove<TIndex, TItem>
 }
 
 // endregion
@@ -243,9 +192,9 @@ export interface INonUpdatableAsyncHeap<TIndex, TItem> {
 // region IAsyncHeap
 
 export interface IAsyncHeap<TIndex, TItem> {
-    readonly get: TGet<TIndex, TItem>
-    /** add === put */
-    readonly change: TChange<TIndex, TItem>
+	readonly get: TGet<TIndex, TItem>
+	/** add === put */
+	readonly change: TChange<TIndex, TItem>
 }
 
 // endregion
@@ -253,16 +202,16 @@ export interface IAsyncHeap<TIndex, TItem> {
 // region IChangesAsyncHeap
 
 export type IChangeItem<TIndex, TItem> = {
-    type: TRequestMethod.Put
-    index: TIndex
-    item: TItem
+	type: TRequestMethod.Put
+	index: TIndex
+	item: TItem
 } | {
-    type: TRequestMethod.Delete
-    index: TIndex
+	type: TRequestMethod.Remove
+	index: TIndex
 }
 
 export interface IChangesAsyncHeap<TChangeIndex, TIndex, TItem> extends
-    INonUpdatableAsyncHeap<TChangeIndex, IChangeItem<TIndex, TItem>>
+	INonUpdatableAsyncHeap<TChangeIndex, IChangeItem<TIndex, TItem>>
 { }
 
 export type TGetChanges<TChangeIndex, TIndex, TItem> = TGet<TChangeIndex, IChangeItem<TIndex, TItem>>
@@ -272,10 +221,10 @@ export type TGetChanges<TChangeIndex, TIndex, TItem> = TGet<TChangeIndex, IChang
 // region ITransactionAsyncHeap
 
 export interface ITransactionAsyncHeap<TIndex, TItem> {
-    readonly getInTransaction: TGet<TIndex, TItem>
-    readonly changeInTransaction: TChange<TIndex, TItem>
-    /** Forbidden to use get requests after change requests */
-    useTransaction<T>(func: (transaction: IAsyncHeap<TIndex, TItem>) => TPromiseOrValue<T>): TPromiseOrValue<T>
+	readonly getInTransaction: TGet<TIndex, TItem>
+	readonly changeInTransaction: TChange<TIndex, TItem>
+	/** Forbidden to use get requests after change requests */
+	useTransaction<T>(func: (transaction: IAsyncHeap<TIndex, TItem>) => TPromiseOrValue<T>): TPromiseOrValue<T>
 }
 
 // endregion
@@ -283,7 +232,7 @@ export interface ITransactionAsyncHeap<TIndex, TItem> {
 // region IDb
 
 export interface IDb<TChangeIndex, TIndex, TItem> extends ITransactionAsyncHeap<TIndex, TItem> {
-    readonly getChanges: TGetChanges<TChangeIndex, TIndex, TItem>
+	readonly getChanges: TGetChanges<TChangeIndex, TIndex, TItem>
 }
 
 // endregion
