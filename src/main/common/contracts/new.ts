@@ -59,7 +59,7 @@ export type TResultsGet<TIndex, TItem> = {
 	}
 }
 
-export type TGet<TIndex, TItem> = TRequestsFunc<TRequestsGet<TIndex>, TResultsGet<TIndex, TItem>>
+export type TGetFunc<TIndex, TItem> = TRequestsFunc<TRequestsGet<TIndex>, TResultsGet<TIndex, TItem>>
 
 // endregion
 
@@ -141,7 +141,7 @@ export type TResultsRemoveAdd<TIndex, TItem> =
 	TResultsRemove<TIndex> & TResultsAdd<TIndex, TItem>
 
 /** operations order: remove, add */
-export type TRemoveAdd<TIndex, TItem> = TRequestsFunc<
+export type TRemoveAddFunc<TIndex, TItem> = TRequestsFunc<
 	TRequestsRemoveAdd<TIndex, TItem>,
 	TResultsRemoveAdd<TIndex, TItem>
 >
@@ -173,7 +173,7 @@ export type TResultsChange<TIndex, TItem> =
 	TResultsRemove<TIndex> & TResultsPut<TIndex, TItem> & TResultsAdd<TIndex, TItem>
 
 /** operations order: remove, put, add */
-export type TChange<TIndex, TItem> = TRequestsFunc<
+export type TChangeFunc<TIndex, TItem> = TRequestsFunc<
 	TRequestsChange<TIndex, TItem>,
 	TResultsChange<TIndex, TItem>
 >
@@ -183,8 +183,8 @@ export type TChange<TIndex, TItem> = TRequestsFunc<
 // region INonUpdatableAsyncHeap
 
 export interface INonUpdatableAsyncHeap<TIndex, TItem> {
-	readonly get: TGet<TIndex, TItem>
-	readonly addRemove: TRemoveAdd<TIndex, TItem>
+	readonly get: TGetFunc<TIndex, TItem>
+	readonly removeAdd: TRemoveAddFunc<TIndex, TItem>
 }
 
 // endregion
@@ -192,9 +192,8 @@ export interface INonUpdatableAsyncHeap<TIndex, TItem> {
 // region IAsyncHeap
 
 export interface IAsyncHeap<TIndex, TItem> {
-	readonly get: TGet<TIndex, TItem>
-	/** add === put */
-	readonly change: TChange<TIndex, TItem>
+	readonly get: TGetFunc<TIndex, TItem>
+	readonly change: TChangeFunc<TIndex, TItem>
 }
 
 // endregion
@@ -214,15 +213,15 @@ export interface IChangesAsyncHeap<TChangeIndex, TIndex, TItem> extends
 	INonUpdatableAsyncHeap<TChangeIndex, IChangeItem<TIndex, TItem>>
 { }
 
-export type TGetChanges<TChangeIndex, TIndex, TItem> = TGet<TChangeIndex, IChangeItem<TIndex, TItem>>
+export type TGetChangesFunc<TChangeIndex, TIndex, TItem> = TGetFunc<TChangeIndex, IChangeItem<TIndex, TItem>>
 
 // endregion
 
 // region ITransactionAsyncHeap
 
 export interface ITransactionAsyncHeap<TIndex, TItem> {
-	readonly getInTransaction: TGet<TIndex, TItem>
-	readonly changeInTransaction: TChange<TIndex, TItem>
+	readonly getInTransaction: TGetFunc<TIndex, TItem>
+	readonly changeInTransaction: TChangeFunc<TIndex, TItem>
 	/** Forbidden to use get requests after change requests */
 	useTransaction<T>(func: (transaction: IAsyncHeap<TIndex, TItem>) => TPromiseOrValue<T>): TPromiseOrValue<T>
 }
@@ -232,7 +231,7 @@ export interface ITransactionAsyncHeap<TIndex, TItem> {
 // region IDb
 
 export interface IDb<TChangeIndex, TIndex, TItem> extends ITransactionAsyncHeap<TIndex, TItem> {
-	readonly getChanges: TGetChanges<TChangeIndex, TIndex, TItem>
+	readonly getChanges: TGetChangesFunc<TChangeIndex, TIndex, TItem>
 }
 
 // endregion
