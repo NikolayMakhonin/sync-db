@@ -24,7 +24,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d52e1996-07d3-4492-b0b2-6fba29f4b076" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/common/contracts/new.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/common/contracts/new.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -241,14 +240,7 @@
       <workItem from="1621567522719" duration="10010000" />
       <workItem from="1622174455816" duration="1697000" />
       <workItem from="1622176175544" duration="9306000" />
-      <workItem from="1622257577059" duration="1854000" />
-    </task>
-    <task id="LOCAL-00029" summary="Moved logger to separated module">
-      <created>1590940632447</created>
-      <option name="number" value="00029" />
-      <option name="presentableId" value="LOCAL-00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1590940632447</updated>
+      <workItem from="1622257577059" duration="2190000" />
     </task>
     <task id="LOCAL-00030" summary="Moved logger to separated module">
       <created>1590941568448</created>
@@ -586,7 +578,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622217639100</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Develop">
+      <created>1622259439589</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1622259439590</updated>
+    </task>
+    <option name="localTasksCounter" value="79" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -695,10 +694,10 @@
       <screen x="0" y="0" width="1920" height="882" />
     </state>
     <state x="717" y="85" key="#com.intellij.ide.util.MemberChooser/0.0.1920.882@0.0.1920.882" timestamp="1620359829761" />
-    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2" timestamp="1622217628569">
+    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2" timestamp="1622259438699">
       <screen x="0" y="0" width="1920" height="882" />
     </state>
-    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2/0.0.1920.882@0.0.1920.882" timestamp="1622217628569" />
+    <state x="0" y="0" width="1920" height="882" key="CommitChangelistDialog2/0.0.1920.882@0.0.1920.882" timestamp="1622259438699" />
     <state x="-1" y="0" width="1921" height="882" key="DiffContextDialog" timestamp="1620277252712">
       <screen x="0" y="0" width="1920" height="882" />
     </state>

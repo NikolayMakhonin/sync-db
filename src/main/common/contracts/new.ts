@@ -35,7 +35,7 @@ export type TGetRequest<TIndex> = {
 }
 
 export type TRequestsGet<TIndex> = {
-	get: TGetRequest<TIndex>[]
+	get?: TGetRequest<TIndex>[]
 }
 
 export type TGetResult<TIndex, TItem> = {
@@ -55,7 +55,7 @@ export type TGetResult<TIndex, TItem> = {
 export type TResultsGet<TIndex, TItem> = {
 	requests: TRequestsGet<TIndex>
 	results: {
-		get: TGetResult<TIndex, TItem>[]
+		get?: TGetResult<TIndex, TItem>[]
 	}
 }
 
@@ -75,13 +75,11 @@ export type TRemoveRequest<TIndex> = {
 }
 
 export type TRequestsRemove<TIndex> = {
-	remove: TRemoveRequest<TIndex>
+	remove?: TRemoveRequest<TIndex>[]
 }
 
 export type TResultsRemove<TIndex> = {
-	requests: {
-		remove: TRemoveRequest<TIndex>
-	}
+	requests: TRequestsRemove<TIndex>
 }
 
 export type TRemove<TIndex> = TRequestsFunc<TRequestsRemove<TIndex>, TResultsRemove<TIndex>>
@@ -97,15 +95,17 @@ export type TAddRequest<TItem> = {
 }
 
 export type TRequestsAdd<TItem> = {
-	add: TAddRequest<TItem>[]
+	add?: TAddRequest<TItem>
+}
+
+export type TAddResult<TIndex> = {
+	indexes?: TIndex[]
 }
 
 export type TResultsAdd<TIndex, TItem> = {
 	requests: TRequestsAdd<TItem>
 	results: {
-		add?: {
-			indexes?: TIndex[]
-		}
+		add?: TAddResult<TIndex>
 	}
 }
 
@@ -121,7 +121,7 @@ export type TPutRequest<TIndex, TItem> = {
 }
 
 export type TRequestsPut<TIndex, TItem> = {
-	put: TPutRequest<TIndex, TItem>
+	put?: TPutRequest<TIndex, TItem>
 }
 
 export type TResultsPut<TIndex, TItem> = {
@@ -132,34 +132,34 @@ export type TPut<TIndex, TItem> = TRequestsFunc<TRequestsPut<TIndex, TItem>, TRe
 
 // endregion
 
-// region TAddRemove
+// region TRemoveAdd
 
-export type TRequestsAddRemove<TIndex, TItem> =
+export type TRequestsRemoveAdd<TIndex, TItem> =
 	TRequestsRemove<TIndex> & TRequestsAdd<TItem>
 
-export type TResultsAddRemove<TIndex, TItem> =
+export type TResultsRemoveAdd<TIndex, TItem> =
 	TResultsRemove<TIndex> & TResultsAdd<TIndex, TItem>
 
 /** operations order: remove, add */
-export type TAddRemove<TIndex, TItem> = TRequestsFunc<
-	TRequestsAddRemove<TIndex, TItem>,
-	TResultsAddRemove<TIndex, TItem>
+export type TRemoveAdd<TIndex, TItem> = TRequestsFunc<
+	TRequestsRemoveAdd<TIndex, TItem>,
+	TResultsRemoveAdd<TIndex, TItem>
 >
 
 // endregion
 
-// region TPutRemove
+// region TRemovePut
 
-export type TRequestsPutRemove<TIndex, TItem> =
+export type TRequestsRemovePut<TIndex, TItem> =
 	TRequestsRemove<TIndex> & TRequestsPut<TIndex, TItem>
 
-export type TResultsPutRemove<TIndex, TItem> =
+export type TResultsRemovePut<TIndex, TItem> =
 	TResultsRemove<TIndex> & TResultsPut<TIndex, TItem>
 
 /** operations order: remove, put */
-export type TPutRemove<TIndex, TItem> = TRequestsFunc<
-	TRequestsPutRemove<TIndex, TItem>,
-	TResultsPutRemove<TIndex, TItem>
+export type TRemovePut<TIndex, TItem> = TRequestsFunc<
+	TRequestsRemovePut<TIndex, TItem>,
+	TResultsRemovePut<TIndex, TItem>
 >
 
 // endregion
@@ -184,7 +184,7 @@ export type TChange<TIndex, TItem> = TRequestsFunc<
 
 export interface INonUpdatableAsyncHeap<TIndex, TItem> {
 	readonly get: TGet<TIndex, TItem>
-	readonly addRemove: TAddRemove<TIndex, TItem>
+	readonly addRemove: TRemoveAdd<TIndex, TItem>
 }
 
 // endregion
